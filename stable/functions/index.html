@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Neil Lindquist">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Functions - TypeStability.jl</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <link href="../assets/Documenter.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Functions";
+    var mkdocs_page_input_path = "functions.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> TypeStability.jl</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Home</span>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Functions</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#function-documentation">Function Documentation</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#inline-stability-checks">Inline Stability Checks</a></li>
+        
+            <li><a class="toctree-l3" href="#external-stability-checks">External Stability Checks</a></li>
+        
+            <li><a class="toctree-l3" href="#utiltities">Utiltities</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">TypeStability.jl</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Functions</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/Collegeville/TypeStability.jl/edit/master/docs/functions.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p><a id='Function-Documentation-1'></a></p>
+<h1 id="function-documentation">Function Documentation</h1>
+<ul>
+<li><a href="./#Function-Documentation-1">Function Documentation</a><ul>
+<li><a href="./#Inline-Stability-Checks-1">Inline Stability Checks</a></li>
+<li><a href="./#External-Stability-Checks-1">External Stability Checks</a></li>
+<li><a href="./#Utiltities-1">Utiltities</a></li>
+</ul>
+</li>
+<li><a href="..#TypeStability.jl-1">TypeStability.jl</a><ul>
+<li><a href="..#Inline-Stability-Checks-1">Inline Stability Checks</a></li>
+<li><a href="..#External-Stability-Checks-1">External Stability Checks</a></li>
+</ul>
+</li>
+</ul>
+<p><a id='Inline-Stability-Checks-1'></a></p>
+<h2 id="inline-stability-checks">Inline Stability Checks</h2>
+<p><a id='TypeStability.enable_inline_stability_checks' href='#TypeStability.enable_inline_stability_checks'>#</a>
+<strong><code>TypeStability.enable_inline_stability_checks</code></strong> &mdash; <em>Function</em>.</p>
+<pre><code>enable_inline_stability_checks(::Bool)
+</code></pre>
+
+<p>Sets whether to run inline stability checks from <a href="./#TypeStability.@stable_function"><code>@stable_function</code></a>.</p>
+<p>If it is set to <code>false</code> (the default value), @stable_function does not perform any type stability checks.</p>
+<p>The value is checked when @stable_function is evaluated, so this should useually be set at the begining of a package definition.</p>
+<p>See <a href="./#TypeStability.inline_stability_checks_enabled"><code>inline_stability_checks_enabled</code></a>.</p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/935c8699f3450412118f6ddd55610b2e015b289f/src/InlineChecker.jl#L8-L20' class='documenter-source'>source</a><br></p>
+<p><a id='TypeStability.inline_stability_checks_enabled' href='#TypeStability.inline_stability_checks_enabled'>#</a>
+<strong><code>TypeStability.inline_stability_checks_enabled</code></strong> &mdash; <em>Function</em>.</p>
+<pre><code>inline_stability_checks_enabled()::Bool
+</code></pre>
+
+<p>Returns whether inline stability checks are enabled.</p>
+<p>See <a href="./#TypeStability.enable_inline_stability_checks"><code>enable_inline_stability_checks</code></a>.</p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/935c8699f3450412118f6ddd55610b2e015b289f/src/InlineChecker.jl#L26-L32' class='documenter-source'>source</a><br></p>
+<p><a id='TypeStability.@stable_function' href='#TypeStability.@stable_function'>#</a>
+<strong><code>TypeStability.@stable_function</code></strong> &mdash; <em>Macro</em>.</p>
+<pre><code>@stable_function arg_lists function_name
+@stable_function arg_lists function_definition(s)
+@stable_function arg_lists acceptable_instability function_name
+@stable_function arg_lists acceptable_instability function_definitions(s)
+</code></pre>
+
+<p>Checks the type stability of the function under the given argument lists.</p>
+<p>If the second value is a function definition, the function is defined before checking type stability.</p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/935c8699f3450412118f6ddd55610b2e015b289f/src/InlineChecker.jl#L38-L48' class='documenter-source'>source</a><br></p>
+<p><a id='External-Stability-Checks-1'></a></p>
+<h2 id="external-stability-checks">External Stability Checks</h2>
+<p><a id='TypeStability.StabilityReport' href='#TypeStability.StabilityReport'>#</a>
+<strong><code>TypeStability.StabilityReport</code></strong> &mdash; <em>Type</em>.</p>
+<pre><code>StabilityReport()
+StabilityReport(unstable_variables::Vector{Tuple{Symbol, Type}})
+</code></pre>
+
+<p>Holds information about the stability of a method.</p>
+<p>If <code>unstable_vars</code> is present, set the fields.  Otherwise, creates an empty set.</p>
+<p>See <a href="./#TypeStability.is_stable"><code>is_stable</code></a></p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/935c8699f3450412118f6ddd55610b2e015b289f/src/StabilityAnalysis.jl#L103-L112' class='documenter-source'>source</a><br></p>
+<p><a id='TypeStability.is_stable' href='#TypeStability.is_stable'>#</a>
+<strong><code>TypeStability.is_stable</code></strong> &mdash; <em>Function</em>.</p>
+<pre><code>is_stable(report::StabilityReport)::Bool
+is_stable(reports::AbstractArray{Tuple{Any, StabilityReport}})::Bool
+</code></pre>
+
+<p>Check if the given <a href="./#TypeStability.StabilityReport"><code>StabilityReport</code></a>s don't have any unstable types.</p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/935c8699f3450412118f6ddd55610b2e015b289f/src/StabilityAnalysis.jl#L127-L132' class='documenter-source'>source</a><br></p>
+<p><a id='TypeStability.stability_warn' href='#TypeStability.stability_warn'>#</a>
+<strong><code>TypeStability.stability_warn</code></strong> &mdash; <em>Function</em>.</p>
+<pre><code>stability_warn(func_name, report)
+</code></pre>
+
+<p>Displays warnings about the function if any of the reports are not stable</p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/935c8699f3450412118f6ddd55610b2e015b289f/src/InlineChecker.jl#L121-L125' class='documenter-source'>source</a><br></p>
+<p><a id='TypeStability.check_function' href='#TypeStability.check_function'>#</a>
+<strong><code>TypeStability.check_function</code></strong> &mdash; <em>Function</em>.</p>
+<pre><code>check_function(func, signatures, acceptable_instability=Dict())
+</code></pre>
+
+<p>Check that the function is stable under each of the given signatures.</p>
+<p>Return an array of method signature-<code>StabilityReport</code> pairs from <a href="./#TypeStability.check_method"><code>check_method</code></a>.</p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/935c8699f3450412118f6ddd55610b2e015b289f/src/StabilityAnalysis.jl#L5-L12' class='documenter-source'>source</a><br></p>
+<p><a id='TypeStability.check_method' href='#TypeStability.check_method'>#</a>
+<strong><code>TypeStability.check_method</code></strong> &mdash; <em>Function</em>.</p>
+<pre><code>check_method(func, signature, acceptable_instability=Dict())
+</code></pre>
+
+<p>Create a <code>StabilityReport</code> object describing the type stability of the method.</p>
+<p>Compute non-concrete types of variables and return value, returning them in a <a href="./#TypeStability.StabilityReport"><code>StabilityReport</code></a> Object</p>
+<p><code>acceptable_instability</code>, if present, is a mapping of variables that are allowed be non-concrete types.  <code>get</code> is called with the mapping, the variable's symbol and <code>Bool</code> to get the variable's allowed type.  Additionally, the return value is checked using <code>:return</code> as the symbol.</p>
+<p>-<code>unstable_return::Type</code>: A supertype of allowed, non-concrete return types.</p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/935c8699f3450412118f6ddd55610b2e015b289f/src/StabilityAnalysis.jl#L21-L35' class='documenter-source'>source</a><br></p>
+<p><a id='Utiltities-1'></a></p>
+<h2 id="utiltities">Utiltities</h2>
+<p><a id='TypeStability.RegexDict' href='#TypeStability.RegexDict'>#</a>
+<strong><code>TypeStability.RegexDict</code></strong> &mdash; <em>Type</em>.</p>
+<pre><code>RegexDict(::Tuple{Union{Regex, String}, T}...)
+</code></pre>
+
+<p>Creates a dictionary that uses Regexes as keys and tests against those when looking up keys. Symbols can be used as lookup keys, by using their name. If multiple Regexes match a key, the value associated with any of them may be returned.</p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/935c8699f3450412118f6ddd55610b2e015b289f/src/Utils.jl#L6-L14' class='documenter-source'>source</a><br></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/Collegeville/TypeStability.jl/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML" defer></script>
+      <script src="../assets/mathjaxhelper.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>
