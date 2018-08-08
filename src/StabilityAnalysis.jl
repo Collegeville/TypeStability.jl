@@ -30,8 +30,6 @@ a [`StabilityReport`](@ref) Object
 allowed be non-concrete types.  `get` is called with the mapping, the
 variable's symbol and `Bool` to get the variable's allowed type.  Additionally,
 the return value is checked using `:return` as the symbol.
-
--`unstable_return::Type`: A supertype of allowed, non-concrete return types.
 """
 #Based off julia's code_warntype
 function check_method(func, signature, acceptable_instability=Dict{Symbol, Type}())
@@ -133,3 +131,19 @@ Check if the given [`StabilityReport`](@ref)s don't have any unstable types.
 is_stable(report::StabilityReport)::Bool = length(report.unstable_variables) == 0
 is_stable(reports::AbstractArray{StabilityReport})::Bool = all(@. is_stable(reports))
 is_stable(reports::Set{StabilityReport})::Bool = all(@. is_stable(reports))
+
+"""
+    stability_warn(func_name, report)
+
+Displays warnings about the function if any of the reports are not stable
+"""
+function stability_warn(func_name, reports)
+    for (args, report) in reports
+        if !is_stable(report)
+            println(STDERR, "$func_name($(join(args, ", "))) is not stable")
+            for (var, typ) in report.unstable_variables
+                println(STDERR, "  $var is of type $typ")
+            end
+        end
+    end
+end

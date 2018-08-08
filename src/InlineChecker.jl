@@ -117,19 +117,3 @@ end
 function parsebody(func::Symbol)
     ([func], quote end)
 end
-
-"""
-    stability_warn(func_name, report)
-
-Displays warnings about the function if any of the reports are not stable
-"""
-function stability_warn(func_name, reports)
-    for (args, report) in reports
-        if !is_stable(report)
-            println(STDERR, "$func_name($(join(args, ", "))) is not stable")
-            for (var, typ) in report.unstable_variables
-                println(STDERR, "  $var is of type $typ")
-            end
-        end
-    end
-end
