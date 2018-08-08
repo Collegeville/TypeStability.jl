@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Allows automation of type stability checks">
+  <meta name="author" content="Neil Lindquist">
+  <link rel="shortcut icon" href="img/favicon.ico">
+  <title>Home - TypeStability.jl</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <link href="assets/Documenter.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Home";
+    var mkdocs_page_input_path = "index.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="js/jquery-2.1.1.min.js" defer></script>
+  <script src="js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="." class="icon icon-home"> TypeStability.jl</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1 current">
+		
+    <span class="caption-text">Home</span>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#typestabilityjl">TypeStability.jl</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#inline-stability-checks">Inline Stability Checks</a></li>
+        
+            <li><a class="toctree-l3" href="#external-stability-checks">External Stability Checks</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="functions/">Functions</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href=".">TypeStability.jl</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Home</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/Collegeville/TypeStability.jl/edit/master/docs/index.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p><a id='TypeStability.jl-1'></a></p>
+<h1 id="typestabilityjl">TypeStability.jl</h1>
+<ul>
+<li><a href="functions/#Function-Documentation-1">Function Documentation</a><ul>
+<li><a href="functions/#Inline-Stability-Checks-1">Inline Stability Checks</a></li>
+<li><a href="functions/#External-Stability-Checks-1">External Stability Checks</a></li>
+<li><a href="functions/#Utiltities-1">Utiltities</a></li>
+</ul>
+</li>
+<li><a href=".#TypeStability.jl-1">TypeStability.jl</a><ul>
+<li><a href=".#Inline-Stability-Checks-1">Inline Stability Checks</a></li>
+<li><a href=".#External-Stability-Checks-1">External Stability Checks</a></li>
+</ul>
+</li>
+</ul>
+<p>TypeStability.jl provides tools to automatically check the type stability of functions.</p>
+<p><a id='Inline-Stability-Checks-1'></a></p>
+<h2 id="inline-stability-checks">Inline Stability Checks</h2>
+<p>TypeStability.jl provides the ability to inline the checks with the function declarations.</p>
+<p>The inline checks are disable by default, but are enabled with the function <code>enable_inline_stability_checks(::Bool)</code>.  This allows the checks to not reduce the load time of the functions, unless the type stability checks are explictly requested such as while unit testing.</p>
+<p>A basic example of using inline checks:</p>
+<pre><code class="julia">julia&gt; using TypeStability
+
+julia&gt; enable_inline_stability_checks(true)
+true
+
+julia&gt; @stable_function [(Float64,)] function f(x)
+                          if x &gt; 0
+                              x
+                          else
+                              Int(0)
+                          end
+                      end
+f(Float64) is not stable
+  return is of type Union{Float64, Int64}
+
+julia&gt; f
+f (generic function with 1 method)
+
+julia&gt; @stable_function [(Float64,)] function g(x)
+                          if x &gt; 0
+                              x
+                          else
+                             0.0
+                          end
+                      end
+
+julia&gt; g
+g (generic function with 1 method)
+</code></pre>
+
+<p>The <code>@stable_function</code> macro has 2 signatures, <code>@stable_function(signatures, function)</code> and <code>@stable_function(signatures, accepted_instability, function)</code>.  The <code>signatures</code> argument is a iterable collection of method signatures to test for stability, where each method signature is a tuple of types or an <code>AbstractArray</code> of types.  The <code>accepted_instability</code> argument is an object that should have a <code>get</code> method (like <code>Dict</code>) that acts as a whitelist of unstable variables.  Finally, <code>function</code> is either a symbol naming the function to test, or an Expr containing one or more function definitions.  Multiple functions can be nesting in a <code>block</code> Expr and macros are expanded before walking the code, but functions nested in structures may not be recognized.  If <code>inline_stability_checks_enabled</code> returns true, each function is checked for stability as per <code>check_function</code>, then prints warnings if there are any instabilities found.</p>
+<p><a id='External-Stability-Checks-1'></a></p>
+<h2 id="external-stability-checks">External Stability Checks</h2>
+<p>Stability can also be checked in a seperate location from the function declarations.  The functions <code>check_function</code> and <code>check_method</code> check the stability of a list of methods or just one method respectively and provide <code>StabilityReport</code> objects containing the results.  Stability reports can be inspected with the functions <code>is_stable</code> and <code>stability_warn</code>.  <code>is_stable</code> takes either a single <code>StabilityReport</code>, an <code>AbstractArray{StabilityReport}</code> or a <code>Set{StabilityReport}</code> object and returns true if all of the reports have no instability.  The <code>stability_warn</code> function takes the name of a function and a iterable collection of method signature - stability report pairs and displays a warning message for any instability.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="functions/" class="btn btn-neutral float-right" title="Functions">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/Collegeville/TypeStability.jl/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+      
+        <span style="margin-left: 15px"><a href="functions/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '.';</script>
+    <script src="js/theme.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML" defer></script>
+      <script src="assets/mathjaxhelper.js" defer></script>
+      <script src="search/main.js" defer></script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.0
+Build Date UTC : 2018-08-08 15:44:44
+-->
