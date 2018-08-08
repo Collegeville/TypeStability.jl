@@ -4,12 +4,12 @@ This package provides functions to automate checking functions for type stabilit
 
 ### Setup
 
-Run `Pkg.clone("https://github.com/Collegeville/TypeStability.jl.git")` to install TypeStability from its repository on Github.  Then TypeStability can be `using`ed or `import`ed as normal.
+Run `Pkg.clone("https://github.com/Collegeville/TypeStability.jl.git")` to install TypeStability from its repository on Github.  Once TypeStability is added to Metadata.jl, then `Pkg.add(TypeStability)` can be used instead.  Then TypeStability can be `using`ed or `import`ed as normal.
 
 
 ### Example
 
-Documentation is located at collegeville.github.io/TypeStability.jl/latest/
+Documentation is located at [collegeville.github.io/TypeStability.jl/stable/](collegeville.github.io/TypeStability.jl/stable/) or, for the lastest version, [collegeville.github.io/TypeStability.jl/latest/](collegeville.github.io/TypeStability.jl/latest/)
 
 The function `enable_inline_stability_checks(::Bool)` enables running the stability checks, while the macro `@stablefunction(signatures, function)` handles running the checks.
 
