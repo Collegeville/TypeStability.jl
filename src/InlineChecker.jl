@@ -8,7 +8,7 @@ run_inline_stability_checks = false
 """
     enable_inline_stability_checks(::Bool)
 
-Sets whether to run inline stability checks from [@stable_function](@ref).
+Sets whether to run inline stability checks from [`@stable_function`](@ref).
 
 If it is set to `false` (the default value), @stable_function does not perform
 any type stability checks.
@@ -16,7 +16,7 @@ any type stability checks.
 The value is checked when @stable_function is evaluated, so this should useually
 be set at the begining of a package definition.
 
-See [inline_stability_checks_enabled](@ref).
+See [`inline_stability_checks_enabled`](@ref).
 """
 function enable_inline_stability_checks(enabled::Bool)
     global run_inline_stability_checks
@@ -28,7 +28,7 @@ end
 
 Returns whether inline stability checks are enabled.
 
-See [enable_inline_stability_checks](@ref).
+See [`enable_inline_stability_checks`](@ref).
 """
 function inline_stability_checks_enabled()::Bool
     run_inline_stability_checks
@@ -55,7 +55,7 @@ macro stable_function(arg_lists, unstable, func)
         esc(quote
             $body
             $((:(TypeStability.stability_warn($name, TypeStability.check_function($name, $arg_lists, $unstable)))
-                for name in func_names)...)
+               for name in func_names)...)
         end)
     else
         esc(func)
@@ -72,6 +72,7 @@ end
 Internal method to parse the last argument of @stable_function
 """
 function parsebody(body::Expr; require_function=true)
+    # TODO support `f(x) = x` function declarations
     if body.head == :function
         if body.args[1] isa Symbol
             func_names = [body.args[1]]

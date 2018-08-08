@@ -2,7 +2,14 @@
 
 This package provides functions to automate checking functions for type stability.  The checks are only run when enabled, which allows the function signatures that need to perform well to be located with the actual code without hurting performance.
 
+### Setup
+
+Run `Pkg.clone("https://github.com/Collegeville/TypeStability.jl.git")` to install TypeStability from its repository on Github.  Then TypeStability can be `using`ed or `import`ed as normal.
+
+
 ### Example
+
+The function `enable_inline_stability_checks(::Bool)` enables running the stability checks, while the macro `@stablefunction(signatures, function)` handles running the checks.
 
 ```julia
 julia> using TypeStability
@@ -34,4 +41,3 @@ julia> @stable_function [(Float64,)] function g(x)
 julia> g
 g (generic function with 1 method)
 ```
-
