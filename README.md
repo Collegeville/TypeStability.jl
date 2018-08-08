@@ -9,6 +9,8 @@ Run `Pkg.clone("https://github.com/Collegeville/TypeStability.jl.git")` to insta
 
 ### Example
 
+Documentation is located at collegeville.github.io/TypeStability.jl/latest/
+
 The function `enable_inline_stability_checks(::Bool)` enables running the stability checks, while the macro `@stablefunction(signatures, function)` handles running the checks.
 
 ```julia
