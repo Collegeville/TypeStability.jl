@@ -4,12 +4,11 @@ This package provides functions to automate checking functions for type stabilit
 
 ### License
 
-TypeStability.jl is licensed under the MIT "Expat" license.  See LICENSE.md for more information.
+TypeStability.jl is licensed under the MIT "Expat" license.  See [LICENSE.md](LICENSE.md) for more information.
 
 ### Setup
 
 Run `Pkg.add(TypeStability)` to install the latest stable version of TypeStability.  Then TypeStability can be `using`ed or `import`ed.
-
 
 ### Example
 
@@ -47,3 +46,7 @@ julia> @stable_function [(Float64,)] function g(x)
 julia> g
 g (generic function with 1 method)
 ```
+
+### Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on contrinbuting to TypeStability.jl.
