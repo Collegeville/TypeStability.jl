@@ -45,8 +45,8 @@ end
 
     #check_method
     @test StabilityReport() == check_method(stable_test_method, (UInt32,))
-    @test StabilityReport() == check_method(unstable_variables, (UInt8,), Dict(:bar=>Integer))
     @test StabilityReport() == check_method(unstable_return, (UInt32,), Dict(:return=>Number))
+    @test StabilityReport() == check_method(unstable_variables, (UInt8,), Dict(:bar=>Integer))
 
     @test StabilityReport(Tuple{Symbol, Type}[(:bar, Union{UInt8, Int})]) == check_method(unstable_variables, (UInt8,))
     @test StabilityReport(Tuple{Symbol, Type}[(:return, Union{Int, Float64})]) == check_method(unstable_return, (UInt32,))
@@ -57,7 +57,7 @@ end
 
     #is_stable(::StabilityReport)
     @test is_stable(StabilityReport())
-    @test is_stable(StabilityReport(Vector{Tuple{Symbol, Type}}(0)))
+    @test is_stable(StabilityReport(Vector{Tuple{Symbol, Type}}(undef, 0)))
     @test !is_stable(StabilityReport(Tuple{Symbol, Type}[(:x, Number)]))
     @test !is_stable(StabilityReport(Tuple{Symbol, Type}[(:x, Number),
                                                          (:y, Array),

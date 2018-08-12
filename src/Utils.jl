@@ -17,11 +17,11 @@ struct RegexDict{T}
 end
 
 function RegexDict{T}() where {T}
-    RegexDict(Vector{Tuple{Regex, T}}(0))
+    RegexDict(Vector{Tuple{Regex, T}}(undef, 0))
 end
 
 function RegexDict(pairs::Tuple{Union{Regex, String}, T}...) where {T}
-    entries = Vector{Tuple{Regex, T}}(length(pairs))
+    entries = Vector{Tuple{Regex, T}}(undef, length(pairs))
     for i in 1:length(pairs)
         (key, val) = pairs[i]
         if key isa String
@@ -38,7 +38,7 @@ end
 
 function Base.get(dict::RegexDict, key::String, default)
     for (entryKey, entryVal) in dict.entries
-        if ismatch(entryKey, key)
+        if occursin(entryKey, key)
             return entryVal
         end
     end
@@ -51,7 +51,7 @@ end
 
 function Base.getindex(dict::RegexDict, index::String)
     for (entryKey, entryVal) in dict.entries
-        if ismatch(entryKey, index)
+        if occursin(entryKey, index)
             return entryVal
         end
     end

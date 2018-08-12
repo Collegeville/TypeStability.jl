@@ -47,10 +47,10 @@ If the second value is a function definition, the function is defined before
 checking type stability.
 """
 macro stable_function(arg_lists, unstable, func)
-    if unstable isa Void || unstable == :nothing
-        unstable = Dict{Symbol, Type}()
-    end
     if run_inline_stability_checks
+        if unstable == nothing || unstable == :nothing
+            unstable = Dict{Symbol, Type}()
+        end
         (func_names, body) = parsebody(func)
         esc(quote
             $body
@@ -63,7 +63,7 @@ macro stable_function(arg_lists, unstable, func)
 end
 
 macro stable_function(arg_lists, func)
-    esc(:(@stable_function $arg_lists nothing $func))
+    esc(:(TypeStability.@stable_function $arg_lists nothing $func))
 end
 
 """

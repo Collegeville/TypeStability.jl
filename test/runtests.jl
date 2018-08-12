@@ -1,5 +1,6 @@
 using TypeStability
-using Base.Test
+using Compat
+using Compat.Test
 
 @testset "TypeStability.jl" begin
 

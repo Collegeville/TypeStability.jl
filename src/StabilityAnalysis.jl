@@ -31,68 +31,84 @@ allowed be non-concrete types.  `get` is called with the mapping, the
 variable's symbol and `Bool` to get the variable's allowed type.  Additionally,
 the return value is checked using `:return` as the symbol.
 """
-#Based off julia's code_warntype
 function check_method(func, signature, acceptable_instability=Dict{Symbol, Type}())
-    function slots_used(ci, slotnames)
-        used = falses(length(slotnames))
-        scan_exprs!(used, ci.code)
-        return used
-    end
+    #Based off julia's code_warntype and show_ir
 
-    function scan_exprs!(used, exprs)
-        for ex in exprs
-            if isa(ex, Slot)
-                used[ex.id] = true
-            elseif isa(ex, Expr)
-                scan_exprs!(used, ex.args)
-            end
-        end
-    end
+    unstable_vars_list = Array{Tuple{Symbol, Type}, 1}(undef, 0)
 
     function var_is_stable(typ, name)
-        (isleaftype(typ) && typ != Core.Box) ||
+        (isconcretetype(typ) && typ != Core.Box) ||
             begin
                 (typ <: get(acceptable_instability, name, Bool))
             end
     end
 
-    #loop over possible methods for the given argument types
-    code = code_typed(func, signature)
+    if VERSION < v"0.7.0-"
+        code = code_typed(func, signature)
+
+        function scan_exprs!(used, exprs)
+            for ex in exprs
+                if isa(ex, Slot)
+                    used[ex.id] = true
+                elseif isa(ex, Expr)
+                    scan_exprs!(used, ex.args)
+                end
+            end
+        end
+    else
+        code = code_typed(func, signature; optimize=false)
+    end
+
     if length(code) == 0
         error("No methods found for $func matching $signature")
     elseif length(code) != 1
         warn("Mutliple methods for $func matching $signature")
     end
 
-    unstable_vars_list = Array{Tuple{Symbol, Type}, 1}(0)
-    unstable_ret = Nullable{Type}()
-
     for (src, rettyp) in code
-        #check variables
+        if !var_is_stable(rettyp, :return)
+            push!(unstable_vars_list, (:return, rettyp))
+        end
         slotnames = Base.sourceinfo_slotnames(src)
-        used_slotids = slots_used(src, slotnames)
+        used_slotids = falses(length(slotnames))
 
-        if isa(src.slottypes, Array)
+        if VERSION < v"0.7.0-"
+            scan_exprs!(used_slotids, src.code)
+            types = src.slottypes
+        else
+            stmts = src.code
+            ssatypes = src.ssavaluetypes
+            types = Vector{Type}(undef, length(slotnames))
+            fill!(types, Union{})
+            for idx in eachindex(stmts)
+                if isa(stmts[idx], Expr) && stmts[idx].head == :(=)
+                    if isa(ssatypes[idx], Core.Compiler.Const)
+                        typ = typeof(ssatypes[idx].val)
+                    else
+                        typ = ssatypes[idx]
+                    end
+                    slotidx = stmts[idx].args[1].id
+                    types[slotidx] = Union{types[slotidx], typ}
+                    used_slotids[slotidx] = true
+                end
+            end
+        end
+
+        if isa(types, Vector)
             for i = 1:length(slotnames)
                 if used_slotids[i]
                     name = Symbol(slotnames[i])
-                    typ = src.slottypes[i]
+                    typ = types[i]
                     if !var_is_stable(typ, name)
                         push!(unstable_vars_list, (name, typ))
                     end
 
-                    #else likely optmized out
+                    #else not an issue for type stability
                 end
             end
         else
-            warn("Can't access slot types of CodeInfo")
+            warn("Can't access types of CodeInfo")
         end
-
-        if !var_is_stable(rettyp, :return)
-            push!(unstable_vars_list, (:return, rettyp))
-        end
-
-        #TODO check body
     end
 
     return StabilityReport(unstable_vars_list)
@@ -140,9 +156,9 @@ Displays warnings about the function if any of the reports are not stable
 function stability_warn(func_name, reports)
     for (args, report) in reports
         if !is_stable(report)
-            println(STDERR, "$func_name($(join(args, ", "))) is not stable")
+            println(stderr, "$func_name($(join(args, ", "))) is not stable")
             for (var, typ) in report.unstable_variables
-                println(STDERR, "  $var is of type $typ")
+                println(stderr, "  $var is of type $typ")
             end
         end
     end

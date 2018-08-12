@@ -8,7 +8,7 @@ end
 
 """Copies the variable `x` to the global variable `x_inline_check_testing_copy`"""
 macro copy(vars...)
-    copy_names = @. convert(Symbol, convert(String, vars) * "_inline_check_testing_copy")
+    copy_names = @. Symbol(String(vars) * "_inline_check_testing_copy")
     esc(quote
         global $(copy_names...)
         $((:($copy_name = $var)
@@ -19,20 +19,20 @@ end
 """For variable `x` `@test's` if the global variable
 `x_inline_check_testing_copy` is a function"""
 macro check(vars...)
-    copy_names = @. convert(Symbol, convert(String, vars) * "_inline_check_testing_copy")
+    copy_names = @. Symbol(String(vars) * "_inline_check_testing_copy")
     esc(quote
         global $(copy_names...)
         $((quote
                 @test $copy_name isa Function
-                @test $(QuoteNode(var)) == Base.function_name($copy_name)
+                @test $(QuoteNode(var)) == nameof($copy_name)
             end
             for (copy_name, var) in zip(copy_names, vars))...)
     end)
 end
 
-@testset "Inline Checker" begin
+@enable_inline_checks true
 
-    @enable_inline_checks true
+@testset "Inline Checker" begin
 
     @test_nowarn begin
         @stable_function([()],
@@ -43,6 +43,16 @@ end
         @copy f
     end
     @check f
+
+    @test_nowarn begin
+        @stable_function([()], nothing,
+        function fb()
+            1
+        end)
+
+        @copy fb
+    end
+    @check fb
 
 
     @test_nowarn begin
@@ -57,6 +67,19 @@ end
         @copy f1 f2
     end
     @check f1 f2
+
+    @test_nowarn begin
+        @stable_function [()] nothing begin
+            function fb1()
+                1
+            end
+            function fb2()
+                3
+            end
+        end
+        @copy fb1 fb2
+    end
+    @check fb1 fb2
 
     @test_nowarn begin
         @stable_function([(Float64,)],
@@ -119,7 +142,7 @@ end
     end
     @check hb
 
-    @test_warn [r".*h1.*", r".*h2.*", (result)->!contains(result, "h3"), r".*not stable.*", r".*eturn.*"] begin
+    @test_warn [r".*h1.*", r".*h2.*", (result)->!occursin(result, "h3"), r".*not stable.*", r".*eturn.*"] begin
         @stable_function [(UInt8, Float64), (UInt16, Float32)] begin
             function h1(x, y)
                 if x > 1
@@ -152,7 +175,9 @@ end
     end
 
     @test_nowarn @stable_function [(Float64,)] foo
+    @test_nowarn @stable_function [(Float64,)] nothing foo
     @test_warn [r".*not stable.*", r".*eturn.*"] @stable_function [(Int,)] foo
+    @test_warn [r".*not stable.*", r".*eturn.*"] @stable_function [(Int,)] nothing foo
     @test_nowarn @stable_function [(Int,)] Dict(:return => Number) foo
 
     @enable_inline_checks false
