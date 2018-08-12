@@ -1,0 +1,6 @@
+name = "TypeStability"
+uuid = "73ec333a-e3df-5994-9c7a-5ef2077ce03e"
+version = "0.0.1"
+author = ["Neil Lindquist <nslindquist@csbsju.edu>"]
+
+[deps]
