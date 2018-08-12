@@ -2,14 +2,18 @@
 
 This package provides functions to automate checking functions for type stability.  The checks are only run when enabled, which allows the function signatures that need to perform well to be located with the actual code without hurting performance.
 
+### License
+
+TypeStability.jl is licensed under the MIT "Expat" license.  See LICENSE.md for more information.
+
 ### Setup
 
-Run `Pkg.clone("https://github.com/Collegeville/TypeStability.jl.git")` to install TypeStability from its repository on Github.  Once TypeStability is added to Metadata.jl, then `Pkg.add(TypeStability)` can be used instead.  Then TypeStability can be `using`ed or `import`ed as normal.
+Run `Pkg.add(TypeStability)` to install the latest stable version of TypeStability.  Then TypeStability can be `using`ed or `import`ed.
 
 
 ### Example
 
-Documentation is located at [https://collegeville.github.io/TypeStability.jl/stable/](collegeville.github.io/TypeStability.jl/stable/) or, for the latest version, [https://collegeville.github.io/TypeStability.jl/latest/](collegeville.github.io/TypeStability.jl/latest/)
+Documentation is located at [https://collegeville.github.io/TypeStability.jl/stable/](https://collegeville.github.io/TypeStability.jl/stable/) or, for the latest version, [https://collegeville.github.io/TypeStability.jl/latest/](https://collegeville.github.io/TypeStability.jl/latest/)
 
 The function `enable_inline_stability_checks(::Bool)` enables running the stability checks, while the macro `@stablefunction(signatures, function)` handles running the checks.
 
