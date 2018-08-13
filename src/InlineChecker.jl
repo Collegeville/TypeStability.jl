@@ -72,27 +72,22 @@ end
 Internal method to parse the last argument of @stable_function
 """
 function parsebody(body::Expr; require_function=true)
-    if body.head == :function
+    if body.head == :function || (body.head == :(=) && isa(body.args[1], Expr))
         if body.args[1] isa Symbol
             func_names = [body.args[1]]
-        elseif body.args[1].head == :call
-            func_names = [body.args[1].args[1]]
-        elseif body.args[1].head == :where && body.args[1].args[1].head == :call
-            func_names = [body.args[1].args[1].args[1]]
         else
-            error("Cannot find function name in $body")
-        end
-    elseif body.head == :(=)
-        if isa(body.args[1], Expr)
-            if body.args[1].head == :call
-                func_names = [body.args[1].args[1]]
-            elseif body.args[1].head == :where && body.args[1].args[1].head == :call
-                func_names = [body.args[1].args[1].args[1]]
-            elseif require_function
-                error("Cannot find function name in $body")
+            subExpr = body.args[1]
+            if subExpr.head == :where
+                subExpr = subExpr.args[1]
             end
-        elseif require_function
-            error("Cannot find function name in $body")
+            if subExpr.head == :(::)
+                subExpr = subExpr.args[1]
+            end
+            if subExpr.head == :call
+                func_names = [subExpr.args[1]]
+            else
+                error("Cannot find function name in $(dump(body))")
+            end
         end
     elseif body.head == :macrocall
         expanded_body = macroexpand(body)
