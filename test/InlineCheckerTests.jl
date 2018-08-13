@@ -166,6 +166,24 @@ end
     end
     @check h1 h2 h3
 
+    @test_nowarn @stable_function [()] i() = 1
+    @test_nowarn @stable_function [()] begin
+                    i1() = 2
+                    i2() = 3
+                end
+
+    @test_warn [r".*not stable.*", r".*eturn.*"] begin
+        @stable_function([(UInt8,), (UInt16,)],
+        h(x) = if x > 1
+                   1
+               else
+                   1.0
+               end
+        )
+        @copy h
+    end
+    @check h
+
     function foo(x)
         if x > 0
             x
