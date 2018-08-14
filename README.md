@@ -1,5 +1,7 @@
 # TypeStability.jl
 
+[![Build Status](https://travis-ci.org/Collegeville/TypeStability.jl.svg?branch=master)](https://travis-ci.org/Collegeville/TypeStability.jl) [![Stable Docs](https://img.shields.io/badge/docs-stable-blue.svg)](https://Collegeville.github.io/TypeStability.jl/stable/) [![Latest Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://Collegeville.github.io/TypeStability.jl/latest/)
+
 This package provides functions to automate checking functions for type stability.  The checks are only run when enabled, which allows the function signatures that need to perform well to be located with the actual code without hurting runtime performance.
 
 TypeStability.jl is tested on Julia versions 0.6.0, 0.6.4, 0.7.0 and 1.0.0.
