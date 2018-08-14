@@ -9,9 +9,6 @@ end
 
 makedocs(modules = [TypeStability])
 
-success(`/bin/python -m mkdocs build`) ||
-    error("couldn't build docs")
-
 deploydocs(deps = Deps.pip("mkdocs", "python-markdown-math"),
            repo = "github.com/Collegeville/TypeStability.jl",
-           julia  = "1.0.0")
+           julia  = "0.6.4") #Currently uses the old package manager
