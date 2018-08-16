@@ -30,6 +30,14 @@ macro check(vars...)
     end)
 end
 
+macro create_func()
+    esc(quote
+        function created_func()
+            return 0
+        end
+    end)
+end
+
 @enable_inline_checks true
 
 @testset "Inline Checker" begin
@@ -183,6 +191,14 @@ end
         @copy h
     end
     @check h
+
+    @test_nowarn @stable_function [()] @create_func
+
+    @test_nowarn @stable_function [()] begin
+        @create_func
+        @copy created_func
+    end
+    @check created_func
 
     function foo(x)
         if x > 0

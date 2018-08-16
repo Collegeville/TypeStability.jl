@@ -51,7 +51,11 @@ macro stable_function(arg_lists, unstable, func)
         if unstable == nothing || unstable == :nothing
             unstable = Dict{Symbol, Type}()
         end
-        (func_names, body) = parsebody(func)
+        if VERSION < v"0.7.0-"
+            (func_names, body) = parsebody(func, @__MODULE__)
+        else
+            (func_names, body) = parsebody(func, __module__)
+        end
         esc(quote
             $body
             $((:(TypeStability.stability_warn($name, TypeStability.check_function($name, $arg_lists, $unstable)))
@@ -67,11 +71,12 @@ macro stable_function(arg_lists, func)
 end
 
 """
-    parsebody(body)
+    parsebody(body, mod::Any)
 
 Internal method to parse the last argument of @stable_function
+`mod` should be a Module in Julia 0.7+, but don't matter on Julia 0.6 due to changes in `macroexpand`
 """
-function parsebody(body::Expr; require_function=true)
+function parsebody(body::Expr, mod; require_function=true)
     if body.head == :function || (body.head == :(=) && isa(body.args[1], Expr))
         if body.args[1] isa Symbol
             func_names = [body.args[1]]
@@ -90,9 +95,13 @@ function parsebody(body::Expr; require_function=true)
             end
         end
     elseif body.head == :macrocall
-        expanded_body = macroexpand(body)
+        if VERSION < v"0.7.0-"
+            expanded_body = macroexpand(body)
+        else
+            expanded_body = macroexpand(mod, body)
+        end
         if isa(expanded_body, Expr)
-            (func_names, _) = parsebody(expanded_body; require_function=false)
+            (func_names, _) = parsebody(expanded_body, mod; require_function=false)
         elseif isa(expanded_body, Symbol)
             func_names = [expanded_body]
         elseif require_function
@@ -104,7 +113,7 @@ function parsebody(body::Expr; require_function=true)
         func_names = Symbol[]
         for expr in body.args
             if isa(expr, Expr)
-                (expr_func_names, _) = parsebody(expr; require_function=false)
+                (expr_func_names, _) = parsebody(expr, mod; require_function=false)
                 append!(func_names, expr_func_names)
             end
         end
@@ -120,6 +129,6 @@ function parsebody(body::Expr; require_function=true)
     (func_names, body)
 end
 
-function parsebody(func::Symbol)
+function parsebody(func::Symbol, mod)
     ([func], quote end)
 end
