@@ -21,7 +21,12 @@ matrix:
     - julia: nightly
 
 notifications:
-  email: false
+  email:
+    mail:
+      recipients:
+        - nslindquist@csbsju.edu
+      on_success: never # default: change
+      on_failure: always # default: always
 
 after_success:
   - julia -e 'Pkg.add("Documenter.jl")'
