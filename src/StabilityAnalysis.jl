@@ -21,7 +21,7 @@ end
 """
     check_method(func, signature, acceptable_instability=Dict())
 
-Create a `StabilityReport` object describing the type stability of the method.
+Create a `StabilityReport` object describing the type stability of the method.is
 
 Compute non-concrete types of variables and return value, returning them in
 a [`StabilityReport`](@ref) Object
@@ -140,16 +140,18 @@ end
 
 """
     is_stable(report::StabilityReport)::Bool
-    is_stable(reports::AbstractArray{Tuple{Any, StabilityReport}})::Bool
+    is_stable(reports::AbstractArray{StabilityReport})::Bool
+    is_stable(reports::AbstractArray{Tuple{<:Any, StabilityReport}})::Bool
 
 Check if the given [`StabilityReport`](@ref)s don't have any unstable types.
 """
-is_stable(report::StabilityReport)::Bool = length(report.unstable_variables) == 0
-is_stable(reports::AbstractArray{StabilityReport})::Bool = all(@. is_stable(reports))
-is_stable(reports::Set{StabilityReport})::Bool = all(@. is_stable(reports))
+is_stable(report::StabilityReport) = length(report.unstable_variables) == 0
+is_stable(reports::AbstractArray{StabilityReport}) = all(is_stable.(reports))
+is_stable(reports::Set{StabilityReport}) = all(is_stable.(reports))
+is_stable(reports::AbstractArray{<:Tuple{<:Any, StabilityReport}}) = all(map(pair->is_stable(pair[2]), reports))
 
 """
-    stability_warn(func_name, report)
+    stability_warn(func_name, report::AbstractArray{Tuple{<:Any,StabilityReport}})
 
 Displays warnings about the function if any of the reports are not stable
 """

@@ -71,4 +71,11 @@ end
     @test !is_stable([StabilityReport(Tuple{Symbol, Type}[(:return, Number)])])
     @test !is_stable([StabilityReport(), StabilityReport(Tuple{Symbol, Type}[(:return, Number)])])
     @test !is_stable([StabilityReport(Tuple{Symbol, Type}[(:return, Number)]), StabilityReport()])
+
+    #is_stable(::Vector{Tuple{Any, StabilityReport}})
+    @test is_stable([((), StabilityReport())])
+    @test is_stable([((), StabilityReport()), ((Int32,), StabilityReport()), ((Float64,),StabilityReport())])
+    @test !is_stable([((String,),StabilityReport(Tuple{Symbol, Type}[(:return, Number)]))])
+    @test !is_stable([((String,),StabilityReport()), ((), StabilityReport(Tuple{Symbol, Type}[(:return, Number)]))])
+    @test !is_stable([((Tuple, String),StabilityReport(Tuple{Symbol, Type}[(:return, Number)])), ((),StabilityReport())])
 end
