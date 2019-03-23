@@ -135,7 +135,7 @@
 <p>If it is set to <code>false</code> (the default value), @stable_function does not perform any type stability checks.</p>
 <p>The value is checked when @stable_function is evaluated, so this should useually be set at the begining of a package definition.</p>
 <p>See <a href="./#TypeStability.inline_stability_checks_enabled"><code>inline_stability_checks_enabled</code></a>.</p>
-<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/7fe437234dadf7c505a4727507568512c7e28301/src/InlineChecker.jl#L8-L20' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/bb554bcbe1d61745188bcb1faa461a73ab184bfe/src/InlineChecker.jl#L8-L20' class='documenter-source'>source</a><br></p>
 <p><a id='TypeStability.inline_stability_checks_enabled' href='#TypeStability.inline_stability_checks_enabled'>#</a>
 <strong><code>TypeStability.inline_stability_checks_enabled</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>inline_stability_checks_enabled()::Bool
@@ -143,7 +143,7 @@
 
 <p>Returns whether inline stability checks are enabled.</p>
 <p>See <a href="./#TypeStability.enable_inline_stability_checks"><code>enable_inline_stability_checks</code></a>.</p>
-<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/7fe437234dadf7c505a4727507568512c7e28301/src/InlineChecker.jl#L26-L32' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/bb554bcbe1d61745188bcb1faa461a73ab184bfe/src/InlineChecker.jl#L26-L32' class='documenter-source'>source</a><br></p>
 <p><a id='TypeStability.@stable_function' href='#TypeStability.@stable_function'>#</a>
 <strong><code>TypeStability.@stable_function</code></strong> &mdash; <em>Macro</em>.</p>
 <pre><code>@stable_function arg_lists function_name
@@ -154,7 +154,7 @@
 
 <p>Checks the type stability of the function under the given argument lists.</p>
 <p>If the second value is a function definition, the function is defined before checking type stability.</p>
-<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/7fe437234dadf7c505a4727507568512c7e28301/src/InlineChecker.jl#L38-L48' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/bb554bcbe1d61745188bcb1faa461a73ab184bfe/src/InlineChecker.jl#L38-L48' class='documenter-source'>source</a><br></p>
 <p><a id='External-Stability-Checks-1'></a></p>
 <h2 id="external-stability-checks">External Stability Checks</h2>
 <p><a id='TypeStability.StabilityReport' href='#TypeStability.StabilityReport'>#</a>
@@ -166,22 +166,23 @@ StabilityReport(unstable_variables::Vector{Tuple{Symbol, Type}})
 <p>Holds information about the stability of a method.</p>
 <p>If <code>unstable_vars</code> is present, set the fields.  Otherwise, creates an empty set.</p>
 <p>See <a href="./#TypeStability.is_stable"><code>is_stable</code></a></p>
-<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/7fe437234dadf7c505a4727507568512c7e28301/src/StabilityAnalysis.jl#L117-L126' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/bb554bcbe1d61745188bcb1faa461a73ab184bfe/src/StabilityAnalysis.jl#L117-L126' class='documenter-source'>source</a><br></p>
 <p><a id='TypeStability.is_stable' href='#TypeStability.is_stable'>#</a>
 <strong><code>TypeStability.is_stable</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>is_stable(report::StabilityReport)::Bool
-is_stable(reports::AbstractArray{Tuple{Any, StabilityReport}})::Bool
+is_stable(reports::AbstractArray{StabilityReport})::Bool
+is_stable(reports::AbstractArray{Tuple{&lt;:Any, StabilityReport}})::Bool
 </code></pre>
 
 <p>Check if the given <a href="./#TypeStability.StabilityReport"><code>StabilityReport</code></a>s don't have any unstable types.</p>
-<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/7fe437234dadf7c505a4727507568512c7e28301/src/StabilityAnalysis.jl#L141-L146' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/bb554bcbe1d61745188bcb1faa461a73ab184bfe/src/StabilityAnalysis.jl#L141-L147' class='documenter-source'>source</a><br></p>
 <p><a id='TypeStability.stability_warn' href='#TypeStability.stability_warn'>#</a>
 <strong><code>TypeStability.stability_warn</code></strong> &mdash; <em>Function</em>.</p>
-<pre><code>stability_warn(func_name, report)
+<pre><code>stability_warn(func_name, report::AbstractArray{Tuple{&lt;:Any,StabilityReport}})
 </code></pre>
 
 <p>Displays warnings about the function if any of the reports are not stable</p>
-<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/7fe437234dadf7c505a4727507568512c7e28301/src/StabilityAnalysis.jl#L151-L155' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/bb554bcbe1d61745188bcb1faa461a73ab184bfe/src/StabilityAnalysis.jl#L153-L157' class='documenter-source'>source</a><br></p>
 <p><a id='TypeStability.check_function' href='#TypeStability.check_function'>#</a>
 <strong><code>TypeStability.check_function</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>check_function(func, signatures, acceptable_instability=Dict())
@@ -189,16 +190,16 @@ is_stable(reports::AbstractArray{Tuple{Any, StabilityReport}})::Bool
 
 <p>Check that the function is stable under each of the given signatures.</p>
 <p>Return an array of method signature-<code>StabilityReport</code> pairs from <a href="./#TypeStability.check_method"><code>check_method</code></a>.</p>
-<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/7fe437234dadf7c505a4727507568512c7e28301/src/StabilityAnalysis.jl#L5-L12' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/bb554bcbe1d61745188bcb1faa461a73ab184bfe/src/StabilityAnalysis.jl#L5-L12' class='documenter-source'>source</a><br></p>
 <p><a id='TypeStability.check_method' href='#TypeStability.check_method'>#</a>
 <strong><code>TypeStability.check_method</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>check_method(func, signature, acceptable_instability=Dict())
 </code></pre>
 
-<p>Create a <code>StabilityReport</code> object describing the type stability of the method.</p>
+<p>Create a <code>StabilityReport</code> object describing the type stability of the method.is</p>
 <p>Compute non-concrete types of variables and return value, returning them in a <a href="./#TypeStability.StabilityReport"><code>StabilityReport</code></a> Object</p>
 <p><code>acceptable_instability</code>, if present, is a mapping of variables that are allowed be non-concrete types.  <code>get</code> is called with the mapping, the variable's symbol and <code>Bool</code> to get the variable's allowed type.  Additionally, the return value is checked using <code>:return</code> as the symbol.</p>
-<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/7fe437234dadf7c505a4727507568512c7e28301/src/StabilityAnalysis.jl#L21-L33' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/bb554bcbe1d61745188bcb1faa461a73ab184bfe/src/StabilityAnalysis.jl#L21-L33' class='documenter-source'>source</a><br></p>
 <p><a id='Utiltities-1'></a></p>
 <h2 id="utiltities">Utiltities</h2>
 <p><a id='TypeStability.RegexDict' href='#TypeStability.RegexDict'>#</a>
@@ -207,7 +208,7 @@ is_stable(reports::AbstractArray{Tuple{Any, StabilityReport}})::Bool
 </code></pre>
 
 <p>Creates a dictionary that uses Regexes as keys and tests against those when looking up keys. Symbols can be used as lookup keys, by using their name. If multiple Regexes match a key, the value associated with any of them may be returned.</p>
-<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/7fe437234dadf7c505a4727507568512c7e28301/src/Utils.jl#L6-L14' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/Collegeville/TypeStability.jl/blob/bb554bcbe1d61745188bcb1faa461a73ab184bfe/src/Utils.jl#L6-L14' class='documenter-source'>source</a><br></p>
               
             </div>
           </div>
