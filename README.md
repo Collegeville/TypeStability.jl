@@ -1,6 +1,6 @@
 # TypeStability.jl
 
-[![Build Status](https://travis-ci.org/Collegeville/TypeStability.jl.svg?branch=master)](https://travis-ci.org/Collegeville/TypeStability.jl) [![Stable Docs](https://img.shields.io/badge/docs-stable-blue.svg)](https://Collegeville.github.io/TypeStability.jl/stable/) [![Latest Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://Collegeville.github.io/TypeStability.jl/latest/)
+[![Build Status](https://travis-ci.org/Collegeville/TypeStability.jl.svg?branch=master)](https://travis-ci.org/Collegeville/TypeStability.jl) [![Stable Docs](https://img.shields.io/badge/docs-stable-blue.svg)](https://Collegeville.github.io/TypeStability.jl/stable/) [![Latest Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://Collegeville.github.io/TypeStability.jl/latest/) [![Version](https://img.shields.io/github/release/Collegeville/TypeStability.jl.svg)](https://github.com/Collegeville/TypeStability.jl/releases)
 
 This package provides functions to automate checking functions for type stability.  The checks are only run when enabled, which allows the function signatures that need to perform well to be located with the actual code without hurting runtime performance.
 
